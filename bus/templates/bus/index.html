@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <style>
+/* Center the loader */
+
+</style>
+
+    {% load static %}
+
+    <title>Dublin Bus</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- bootstrap reference-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <!-- css reference-->
+    <link rel="stylesheet" href="../static/css/main.css" type="text/css"/>
+
+
+    <!--  fonts reference-->
+    <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+
+    <!-- fa icon-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+</head>
+
+<body>
+<div id="nav">
+    <span id="menu" class="glyphicon glyphicon-th-list " aria-hidden="true"></span>
+    <img src="../static/images/db_logo.jpg"/>
+</div>
+
+<div id="map"></div>
+
+<div id="searchbar">
+
+    <div id="icon-nav" class="tvs">
+        <a class="current"><span class="glyphicon glyphicon-search" id="search-icon" onclick="show_search()">Search</span></a>
+
+        <a ><span class="glyphicon glyphicon-heart" id="heart-icon" onclick=show_collection();fetchsavedtrips()>Favourite</span></a>
+
+        <a ><span class="glyphicon glyphicon-globe" id="user-icon" onclick="show_tourist()">Tourist</span></a>
+    </div>
+
+    <div id="input-bar">
+
+        <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-home"
+                                                                     aria-hidden="true"></span></span>
+            <input id="searchTextField" type="text" class="form-control" placeholder="Enter starting point"
+                   autocomplete="on" aria-describedby="sizing-addon2" onclick="initialize()" required>
+        </div>
+
+        <span id="exchange-icon" class="glyphicon glyphicon-sort" aria-hidden="true"></span>
+
+        <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon2"><span class="glyphicon glyphicon-glass"
+                                                                     aria-hidden="true"></span></span>
+            <input id="searchTextField2" type="text" class="form-control" placeholder="Enter ending point"
+                   autocomplete="on" runat="server" onclick="initialize2()" aria-describedby="sizing-addon2" required>
+        </div>
+
+        <div id="date-time">
+
+            <div id="time-selection">
+                <input id="mytime" type="time" class="form-control" placeholder="time" min="05:30" max="23:59">
+
+            </div>
+
+
+            <div id="date-selection">
+                <input id="mydate" type="date" class="form-control" placeholder="Date" name="tripday">
+            </div>
+        </div>
+
+        <button id="depart-now-btn" type="button" onclick=test_func();show_route();myFunction();>Find Route</button>
+        <button id="change-time-btn" type="button" onclick="savetrip()">Save Route</button>
+        <button id="location-btn" title="Find nearest bus stops" onclick="getLocation()"><i class="fa fa-location-arrow"></i></button>
+        <!-- <button onclick="savetrip()"> Save a Trip as Favourite</button> -->
+
+        <!-- <div id="date-time">
+                    <div class="input-group date form_datetime" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="button" onclick="return test_func();"/>Go</button>
+                </div> -->
+
+    </div>
+
+    <div id="collection">
+        <table id="myTable">
+
+        </table>
+    </div>
+
+    <div id="route">
+
+        <div class="panel panel-primary">
+
+
+            <div id="route_title" class="panel-heading">
+                <div class="panel-heading">
+                    <div id="t1">
+                         <h3 class="panel-title"><i class="fa fa-bus" style="font-size:24px"></i></h3>
+                        
+                    </div>
+                    <div id="t2">
+                        <select class="initial_hide form-control" id="select"></select>
+                    </div> 
+                </div>
+            
+            </div>
+
+            <div class="panel-body">
+                <p id = "demo1"></p>
+                <p id = "demo2"></p>
+                <p id = "demo3"></p>
+                <p id = "demo4"></p>
+                <p id = "demo5"></p>
+                <p id = "demo6"></p>
+                <p id = "demo7"></p>
+                <p id = "demo8"></p>
+                <p id = "demo9"></p>
+                <p id = "demo10"></p>
+                <p id = "demo11"></p>
+                <p id = "demo12"></p>
+                <p id = "demo13"></p>
+                <p id = "demo14"></p>
+                <p id = "demo15"></p>
+                <p id = "demo16"></p>
+                <p id = "demo17"></p>
+            </div>
+        </div>
+
+       
+
+
+
+
+
+    </div>
+
+
+    <div id="tourist_bar">
+
+        <div class="page">
+            <div class="page__demo">
+                <div class="page__toggle">
+                    <label class="toggle">
+                        <input class="toggle__input" type="checkbox" id="tourist" onchange="TouristMode()">
+                        <span class="toggle__label">
+                                    <span class="toggle__text">Tourist Mode</span>
+                                </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <p id="tourist_info" class="initial-hide">Popular Places to Visit:</p>
+
+        <!--This drop down is for selecting a Tourist Destination by the user-->
+
+        <select class="initial_hide_2 form-control" id="select2" onchange="show_search();getSelectedValue()">
+        </select>
+
+    </div>
+
+</div>
+
+<div id="weather">
+    <div id="weather-icon"></div>
+    <p id="currentTemp"></p>
+    <p id="windSpeed"></p>
+</div>
+<div id="loader" class="initial-hide_spinner"></div>
+<!-- <div id="show-stops">
+    <span class="button" >Find Nearest Bus Stops</span>
+</div>
+ -->
+<p id="test"></p>
+
+
+<script type="text/javascript" src="{% static 'bus/main.js' %}"></script> <!--Load external JS file-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM9nXFgqm8JbVlEYRAiPv6WTUFGSvyTBU&callback=myMap&libraries=places"></script>
+
+
+</body>
+</html>
